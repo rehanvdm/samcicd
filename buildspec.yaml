@@ -6,22 +6,20 @@ phases:
   pre_build:
     commands:
       - cd app/lambda/api
-      # Install the dependencies
       - npm install
+      - npm prune --production
       - cd ../../../
   build:
     commands:
-      # Run tests
-      - npm test
-      # Remove all dependencies not relevant for production
-      - npm prune --production
-
+        # Run tests
+        - npm install
+        - npm test
+        - npm prune --production
   post_build:
     commands:
       # Create and upload a deployment package
-      - aws cloudformation package --template-file sam-template.yaml --s3-bucket $S3_BUCKET --output-template-file sam-template-output.yaml
-
+      - npm run sam_package
 artifacts:
   files:
-    - sam-template-output.yaml
+    - app-packaged.yaml
 
