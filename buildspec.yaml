@@ -8,13 +8,14 @@ phases:
       - cd app/lambda/api
       # Install the dependencies
       - npm install
+      - cd ../../../
   build:
     commands:
       # Run tests
       - npm test
       # Remove all dependencies not relevant for production
       - npm prune --production
-      - cd ../../../
+
   post_build:
     commands:
       # Create and upload a deployment package
