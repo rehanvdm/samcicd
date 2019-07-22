@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: TestSamCICD
+
+Parameters:
+  AppName:
+    Default: test-sam-ci-cd
+    Type: String
+    Description: Name of app
+  AppEnvironment:
+    Default: prod
+    Type: String
+    AllowedValues:
+      - dev
+      - prod
+    Description: Environment of this stack
+
+
+
+Globals:
+  Function:
+    Timeout: 5
+    Environment:
+      Variables:
+        APPNAME: !Ref AppName
+        ENVIRONMENT: !Ref AppEnvironment
+    Tags:
+      APPNAME: !Ref AppName
+      ENVIRONMENT: !Ref AppEnvironment
+
+
+Resources:
+  ApiLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join ['', ['test-sam-ci-cd-', !Ref AppEnvironment]]
+      Runtime: nodejs8.10
+      CodeUri: app/lambda/api/
+      Handler: app.handler
+      Timeout: 10
+      Environment:
+        Variables:
+          TIMEOUT: 10
+      Events:
+        AnyRequest:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            RestApiId: !Ref TestRestApi
+
+  TestRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Join ['', ['test-sam-ci-cd-', !Ref AppEnvironment]]
+      StageName: !Ref AppEnvironment
+
+
+Outputs:
+  TestRestApi:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${TestRestApi}.execute-api.${AWS::Region}.amazonaws.com/${AppEnvironment}/"
