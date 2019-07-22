@@ -17,7 +17,6 @@ phases:
   build:
     commands:
         # Run tests
-
         - npm test
         - npm prune --production
   post_build:
