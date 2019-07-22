@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/_mocha --ui tdd ./app-tests/lambda/api ",
-    "sam_package": "sam build --template app.yaml && sam package --output-template-file app-packaged.yaml --s3-bucket rehan-sam-packages --s3-prefix samcicd"
+    "sam_package": "sam build --template app.yaml && sam package --output-template-file app-packaged.yaml --s3-bucket rehan-sam-packages --s3-prefix samcicd",
+    "deploy_pipeline": "aws cloudformation create-stack --stack-name samcicd-pipeline --template-body file://app-build-pipeline.yaml --parameters ParameterKey=RepositoryOwner,ParameterValue=rehanvdm  ParameterKey=RepositoryName,ParameterValue=samcicd --capabilities=CAPABILITY_IAM",
+    "update_pipeline": "aws cloudformation update-stack --stack-name samcicd-pipeline --template-body file://app-build-pipeline.yaml --parameters ParameterKey=RepositoryOwner,ParameterValue=rehanvdm  ParameterKey=RepositoryName,ParameterValue=samcicd --capabilities=CAPABILITY_IAM"
   },
   "author": "",
   "license": "ISC",
