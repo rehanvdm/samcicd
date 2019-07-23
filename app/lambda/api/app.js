@@ -6,7 +6,7 @@ module.exports.handler = async (event, context) =>
 
     try
     {
-       response = { statusCode: 200, body: 'Thank you' };
+       response = { statusCode: 200, body: 'Thank you, CICD is cool' };
     }
     catch (err)
     {
