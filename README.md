@@ -1,4 +1,4 @@
-#Basic CICD Pipeline for SAM
+# Basic CICD Pipeline for SAM
 
 Basics needed for a AWS CodeBuild and CodePipeline to deploy a Lambda function
 
