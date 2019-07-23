@@ -18,7 +18,7 @@
   },
   "nyc": {
     "exclude": [
-      "tests"
+      "app-tests"
     ]
   }
 }
